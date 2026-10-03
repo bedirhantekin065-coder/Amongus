@@ -376,6 +376,22 @@ function showMainMenu() {
     }
 }
 
+// Offline Mod Butonu
+function addOfflineButton() {
+    const mainMenu = document.getElementById('mainMenu');
+    if (!mainMenu) return;
+    
+    const offlineBtn = document.createElement('button');
+    offlineBtn.className = 'menu-btn';
+    offlineBtn.innerHTML = '<span class="btn-icon">💾</span><span class="btn-label">OFFLINE MOD</span>';
+    offlineBtn.onclick = showOfflineMenu;
+    
+    const menuButtons = mainMenu.querySelector('.menu-buttons');
+    if (menuButtons) {
+        menuButtons.appendChild(offlineBtn);
+    }
+}
+
 function saveUsername() {
     const usernameInput = document.getElementById('usernameInput');
     const colorSelect = document.getElementById('colorSelect');

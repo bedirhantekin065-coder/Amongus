@@ -4,8 +4,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Among Us Türkçe - Oyun Yüklendi');
     
+    // Offline mod butonunu ekle
+    addOfflineButton();
+    
     // Temel başlatma
     initializeApplication();
+    
+    // Offline modu başlat
+    checkOfflineMode();
 });
 
 // ===== Uygulama Başlatma =====
