@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Among Us - Türkçe | Ana Menü</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Arka Plan Animasyonu -->
+    <div class="background-animation">
+        <div class="floating-crewmate crewmate-1"></div>
+        <div class="floating-crewmate crewmate-2"></div>
+        <div class="floating-crewmate crewmate-3"></div>
+        <div class="space-stars"></div>
+    </div>
+
+    <!-- Ana Menü -->
+    <div class="main-container">
+        <!-- Logo -->
+        <div class="logo-container">
+            <div class="amongus-logo">
+                <span class="logo-letter logo-a">A</span>
+                <span class="logo-letter logo-m">M</span>
+                <span class="logo-letter logo-o">O</span>
+                <span class="logo-letter logo-n">N</span>
+                <span class="logo-letter logo-g">G</span>
+                <span class="logo-separator"></span>
+                <span class="logo-letter logo-u">U</span>
+                <span class="logo-letter logo-s">S</span>
+            </div>
+            <p class="subtitle">Türkçe Sürüm</p>
+        </div>
+
+        <!-- Kullanıcı Adı Giriş Paneli -->
+        <div class="username-panel" id="usernamePanel">
+            <div class="panel-header">
+                <h2>👤 KULLANICI ADI GİRİNİZ</h2>
+            </div>
+            <div class="panel-body">
+                <input type="text" id="usernameInput" class="username-input" placeholder="Kullanıcı adınız..." maxlength="15">
+                <select id="colorSelect" class="color-select">
+                    <option value="red">🔴 Kırmızı</option>
+                    <option value="blue">🔵 Mavi</option>
+                    <option value="green">🟢 Yeşil</option>
+                    <option value="yellow">🟡 Sarı</option>
+                    <option value="orange">🟠 Turuncu</option>
+                    <option value="purple">🟣 Mor</option>
+                    <option value="pink">🟫 Pembe</option>
+                    <option value="cyan">🔵 Açık Mavi</option>
+                    <option value="brown">🟤 Kahverengi</option>
+                    <option value="lime">🟢 Açık Yeşil</option>
+                </select>
+                <button onclick="saveUsername()" class="btn btn-primary">
+                    <span class="btn-text">KAYDET VE DEVAM ET</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Ana Menü Butonları (Kullanıcı adı kaydedildikten sonra görünür) -->
+        <div class="main-menu" id="mainMenu" style="display: none;">
+            <div class="menu-buttons">
+                <button onclick="showCreateRoom()" class="menu-btn">
+                    <span class="btn-icon">🏠</span>
+                    <span class="btn-label">ODA OLUŞTUR</span>
+                </button>
+                <button onclick="showJoinRoom()" class="menu-btn">
+                    <span class="btn-icon">🚪</span>
+                    <span class="btn-label">ODAYA KATIL</span>
+                </button>
+                <button onclick="showSettings()" class="menu-btn">
+                    <span class="btn-icon">⚙️</span>
+                    <span class="btn-label">AYARLAR</span>
+                </button>
+                <button onclick="showAdminPanel()" class="menu-btn admin-btn" id="adminBtn" style="display: none;">
+                    <span class="btn-icon">👑</span>
+                    <span class="btn-label">ADMIN PANELİ</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Oda Oluşturma Paneli -->
+        <div class="modal" id="createRoomModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>➕ ODA OLUŞTUR</h2>
+                    <span class="close-btn" onclick="closeModal('createRoomModal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Oda Adı</label>
+                        <input type="text" id="roomName" placeholder="Oda adı..." maxlength="20">
+                    </div>
+                    <div class="form-group">
+                        <label>Maksimum Oyuncu (1-10)</label>
+                        <input type="number" id="maxPlayers" min="1" max="10" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label>Harita</label>
+                        <select id="mapSelect">
+                            <option value="skeld">The Skeld</option>
+                            <option value="mira">Mira HQ</option>
+                            <option value="polus">Polus</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Imposter Sayısı</label>
+                        <select id="imposterCount">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="addBots"> Bot Ekle
+                        </label>
+                        <div id="botCountContainer" style="display: none; margin-top: 10px;">
+                            <label>Bot Sayısı (1-8)</label>
+                            <input type="number" id="botCount" min="1" max="8" value="2">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="createRoom()" class="btn btn-success">ODAYI OLUŞTUR</button>
+                    <button onclick="closeModal('createRoomModal')" class="btn btn-secondary">İPTAL</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Odaya Katıl Paneli -->
+        <div class="modal" id="joinRoomModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>🚪 ODAYA KATIL</h2>
+                    <span class="close-btn" onclick="closeModal('joinRoomModal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Oda Kodu</label>
+                        <input type="text" id="roomCode" placeholder="Oda kodu..." maxlength="6">
+                    </div>
+                    <div class="room-list">
+                        <h3>Açık Odalar</h3>
+                        <div id="openRoomsList"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="joinRoom()" class="btn btn-primary">KATIL</button>
+                    <button onclick="refreshRoomList()" class="btn btn-info">YENİLE</button>
+                    <button onclick="closeModal('joinRoomModal')" class="btn btn-secondary">İPTAL</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Oda Lobisi -->
+        <div class="modal" id="roomLobbyModal">
+            <div class="modal-content room-lobby">
+                <div class="modal-header">
+                    <h2 id="roomNameDisplay">Oda Adı</h2>
+                    <span class="close-btn" onclick="leaveRoom()">&times;</span>
+                </div>
+                <div class="lobby-body">
+                    <div class="room-info">
+                        <p>Oda Kodu: <strong id="roomCodeDisplay"></strong></p>
+                        <p>Harita: <strong id="mapDisplay"></strong></p>
+                        <p>Imposter: <strong id="imposterCountDisplay"></strong></p>
+                    </div>
+                    <div class="player-list">
+                        <h3>Oyuncular (<span id="playerCount">0</span>/<span id="maxPlayersDisplay">10</span>)</h3>
+                        <div id="playersList"></div>
+                    </div>
+                    <div class="lobby-actions">
+                        <button onclick="startGame()" class="btn btn-success" id="startGameBtn" style="display: none;">
+                            OYUNU BAŞLAT
+                        </button>
+                        <button onclick="copyRoomCode()" class="btn btn-info">
+                            KODU KOPYALA
+                        </button>
+                        <button onclick="leaveRoom()" class="btn btn-danger">
+                            ODAYI TERK ET
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Oyun Ekranı -->
+        <div class="modal fullscreen" id="gameScreen">
+            <div class="game-container">
+                <div class="game-header">
+                    <div class="game-info">
+                        <span id="gameRoomCode"></span>
+                        <span id="gameMapName"></span>
+                    </div>
+                    <div class="player-stats">
+                        <span id="playerRole" class="role-badge"></span>
+                        <span id="playerNameDisplay"></span>
+                    </div>
+                </div>
+                
+                <div class="game-board">
+                    <canvas id="gameCanvas"></canvas>
+                    <div class="game-overlay" id="gameOverlay">
+                        <div class="task-list" id="taskList">
+                            <h3>Görevler</h3>
+                            <div id="tasksContainer"></div>
+                        </div>
+                        <div class="meeting-ui" id="meetingUI" style="display: none;">
+                            <h2>Toplantı</h2>
+                            <p id="meetingTopic"></p>
+                            <div class="voting-section">
+                                <h3>Oylama</h3>
+                                <div id="votingOptions"></div>
+                            </div>
+                            <div class="discussion-chat" id="discussionChat">
+                                <div id="chatMessages"></div>
+                                <input type="text" id="chatInput" placeholder="Mesajınız..." onkeypress="handleChatKey(event)">
+                            </div>
+                        </div>
+                        <div class="emergency-button" onclick="callMeeting()">
+                            TOPLANTI ÇAĞIR
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-footer">
+                    <div class="player-icons" id="playerIcons"></div>
+                    <div class="game-timer" id="gameTimer">00:00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ayarlar Paneli -->
+        <div class="modal" id="settingsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>⚙️ AYARLAR</h2>
+                    <span class="close-btn" onclick="closeModal('settingsModal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="settings-section">
+                        <h3>Ses Ayarları</h3>
+                        <div class="form-group">
+                            <label>Müzik Ses Seviyesi</label>
+                            <input type="range" id="musicVolume" min="0" max="100" value="50">
+                        </div>
+                        <div class="form-group">
+                            <label>Efekt Ses Seviyesi</label>
+                            <input type="range" id="effectVolume" min="0" max="100" value="50">
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h3>Görüntü Ayarları</h3>
+                        <div class="form-group checkbox-group">
+                            <label>
+                                <input type="checkbox" id="fullscreenToggle"> Tam Ekran
+                            </label>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h3>Kullanıcı Bilgileri</h3>
+                        <div class="user-info">
+                            <p>Kullanıcı Adı: <strong id="settingsUsername"></strong></p>
+                            <p>Renk: <strong id="settingsColor"></strong></p>
+                            <button onclick="changeUsername()" class="btn btn-small">DEĞİŞTİR</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="saveSettings()" class="btn btn-success">KAYDET</button>
+                    <button onclick="closeModal('settingsModal')" class="btn btn-secondary">KAPAT</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Paneli -->
+        <div class="modal fullscreen" id="adminPanel">
+            <div class="admin-container">
+                <div class="admin-header">
+                    <h2>👑 ADMIN PANELİ</h2>
+                    <button onclick="closeModal('adminPanel')" class="btn btn-secondary">GERİ</button>
+                </div>
+                <div class="admin-tabs">
+                    <button class="tab-btn active" onclick="showAdminTab('rooms')">Odalar</button>
+                    <button class="tab-btn" onclick="showAdminTab('bots')">Bot Yönetimi</button>
+                    <button class="tab-btn" onclick="showAdminTab('players')">Oyuncular</button>
+                    <button class="tab-btn" onclick="showAdminTab('settings')">Sunucu Ayarları</button>
+                </div>
+                <div class="admin-content" id="adminContent">
+                    <div class="tab-content active" id="tab-rooms">
+                        <h3>Aktif Odalar</h3>
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Oda Kodu</th>
+                                    <th>Oda Adı</th>
+                                    <th>Oyuncu Sayısı</th>
+                                    <th>Durum</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminRoomsTable"></tbody>
+                        </table>
+                    </div>
+                    <div class="tab-content" id="tab-bots">
+                        <h3>Bot Yönetimi</h3>
+                        <div class="bot-controls">
+                            <button onclick="createNewBot()" class="btn btn-success">YENİ BOT EKLE</button>
+                            <div class="bot-list" id="botList"></div>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="tab-players">
+                        <h3>Çevrimiçi Oyuncular</h3>
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Kullanıcı Adı</th>
+                                    <th>Renk</th>
+                                    <th>Oda</th>
+                                    <th>IP Adresi</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminPlayersTable"></tbody>
+                        </table>
+                    </div>
+                    <div class="tab-content" id="tab-settings">
+                        <h3>Sunucu Ayarları</h3>
+                        <div class="admin-form">
+                            <div class="form-group">
+                                <label>Maksimum Oda Sayısı</label>
+                                <input type="number" id="maxRooms" value="100">
+                            </div>
+                            <div class="form-group">
+                                <label>Maksimum Bot Sayısı</label>
+                                <input type="number" id="maxBots" value="50">
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="allowBots"> Botlara İzin Ver
+                                </label>
+                            </div>
+                            <button onclick="saveAdminSettings()" class="btn btn-success">AYARLARI KAYDET</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bildirim Sistemi -->
+        <div class="notification-container" id="notificationContainer"></div>
+
+        <!-- Yükleme Animasyonu -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-content">
+                <div class="crewmate-loader"></div>
+                <p id="loadingText">Yükleniyor...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sesler -->
+    <audio id="backgroundMusic" loop>
+        <source src="assets/sounds/background.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="meetingSound" preload="auto">
+        <source src="assets/sounds/meeting.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="taskSound" preload="auto">
+        <source src="assets/sounds/task.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="killSound" preload="auto">
+        <source src="assets/sounds/kill.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/bot-ai.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

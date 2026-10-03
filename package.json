@@ -1,0 +1,29 @@
+{
+  "name": "amongus-turkce",
+  "version": "1.0.0",
+  "description": "Among Us benzeri Türkçe oyun - WebSocket sunucusu",
+  "main": "websocket-server.js",
+  "scripts": {
+    "start": "node websocket-server.js",
+    "dev": "nodemon websocket-server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "amongus",
+    "game",
+    "websocket",
+    "multiplayer",
+    "turkish"
+  ],
+  "author": "Among Us Türkçe Geliştirici",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^8.13.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
